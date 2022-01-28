@@ -20,8 +20,8 @@ export default class Items extends Component {
 
   setEvent () {
     const {items} = this.$state;
+    const { catchurl } = this.$props;
     document.getElementById("btn1").addEventListener('click', () => {
-    // this.$target.getElementById("btn1").addEventListener('click', () => {
     // this.$target.querySelector('button').addEventListener('click', () => {
     fetch("http://localhost:3001/get")
     .then((response) => response.json())
@@ -29,8 +29,15 @@ export default class Items extends Component {
     });
 
     document.getElementById("btn2").addEventListener('click', (e) => {
-      console.log(e)
-      });
+      console.log("click")
+      const pathName = e.target.getAttribute("route")
+      historyRouter(pathName,1)
+      catchurl(window.location.pathname)
+    })
   }
+}
+const historyRouter = (pathName , element) => {
+  window.history.pushState({} , pathName , window.location.origin + pathName )
+  
 }
 
