@@ -1,4 +1,4 @@
-import Component from "../components/Component";
+import Component from "../cors/Component";
 
 export default class detail extends Component {
   

@@ -1,13 +1,13 @@
-import Component from "./Component";
-
+import Component from "../../cors/Component";
+import './main.css'
 export default class Items extends Component {
   setup () {
     this.$state = { items: ['item1', 'item2'] };
-
   }
   
   template () {
     const { items } = this.$state;
+    const {data} = this.$props;
     return `
     <p>메인 페이지</p>  
     <ul>
@@ -15,21 +15,33 @@ export default class Items extends Component {
       </ul>
       <button id = "btn2"  route = "/home" >작성</button> 
       <button id = "btn1">추가111</button>
+
+      <table border="1">
+	    <th>글번호</th>
+	    <th>제목</th>
+      <th>작성자</th>
+      <th>작성일</th>
+	    <tr><!-- 첫번째 줄 시작 -->
+	    <td>1</td>
+	    <td>안녕</td>
+      <td>문창희</td>
+      <td>2022.01.29</td>
+	    </tr><!-- 첫번째 줄 끝 -->
+    </table>
+    ${data}
     `
   }
 
   setEvent () {
     const {items} = this.$state;
     const { catchurl } = this.$props;
-    document.getElementById("btn1").addEventListener('click', () => {
-    // this.$target.querySelector('button').addEventListener('click', () => {
+    this.$target.querySelector('#btn1').addEventListener('click', () => {
     fetch("http://localhost:3001/get")
     .then((response) => response.json())
     .then((data) => this.setState({items:[...items,data.data]}));
     });
 
-    document.getElementById("btn2").addEventListener('click', (e) => {
-      console.log("click")
+    this.$target.querySelector('#btn2').addEventListener('click', (e) => {
       const pathName = e.target.getAttribute("route")
       historyRouter(pathName,1)
       catchurl(window.location.pathname)
@@ -37,7 +49,6 @@ export default class Items extends Component {
   }
 }
 const historyRouter = (pathName , element) => {
-  window.history.pushState({} , pathName , window.location.origin + pathName )
-  
+  window.history.pushState({} , pathName , window.location.origin + pathName ) 
 }
 

@@ -13,5 +13,9 @@ app.get("/get", (req, res) => {
     // res.sendFile(path.resolve(__dirname, "frontend", "index.html"));
     res.send({data : "hello"});
 });
+app.get("/", (req, res) => {
+    // res.sendFile(path.resolve(__dirname, "frontend", "index.html"));
+    res.send({data : "welcome"});
+});
 
 app.listen(process.env.PORT || 3001, () => console.log("Server running..."));
