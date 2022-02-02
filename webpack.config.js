@@ -1,5 +1,5 @@
 module.exports = { 
-    mode : 'development',
+    mode : 'production',
     entry: {
         app: '/src/index.js'
       },
@@ -7,5 +7,8 @@ module.exports = {
         path: __dirname + '/public', 
         filename: 'bundle.js' 
     } ,
+    devServer : {
+        historyApiFallback :true,
+    }
 };
- 
+

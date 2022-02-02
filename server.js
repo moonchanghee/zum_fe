@@ -8,19 +8,23 @@ let data = [
     { id: 2, title : "제목2" , writer: '글쓴이2',  contents : "내용내용2" , date : "2022.01.30" }
  ]
 
-// app.use("/static", express.static(path.resolve(__dirname, "public", "static")));
 
-// app.get("/*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "frontend", "index.html"));
-// });
+
 app.use(cors());
+
 app.get("/get", (req, res) => {
-    // res.sendFile(path.resolve(__dirname, "frontend", "index.html"));
     res.send({data : "hello"});
 });
 app.get("/", (req, res) => {
-    // res.sendFile(path.resolve(__dirname, "frontend", "index.html"));
     res.send({data : data});
 });
 
-app.listen(process.env.PORT || 3001, () => console.log("Server running..."));
+app.get("/detail"  , (req,res) =>{
+    const id = req.query.id
+    let detailData = data.filter(function (e) { return e.id == id });
+    res.send({data :detailData })
+
+})
+
+
+app.listen(process.env.PORT || 3001, () => console.log("Server running"));
