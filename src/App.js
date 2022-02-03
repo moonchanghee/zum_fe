@@ -2,6 +2,7 @@ import Component from "./cors/Component.js";
 import Main from "./page/main/Main.js";
 import Detail from './page/detail/Detail'
 import Modify from './page/modify/Modify'
+import Write from './page/write/Write'
 
 export default class App extends Component {
   setup () {
@@ -48,6 +49,11 @@ template () {
     }
     if(window.location.pathname == "/modify"){
       new Modify($main,{
+        historyRouter: historyRouter,
+      })
+    }
+    if(window.location.pathname == "/write"){
+      new Write($main,{
         historyRouter: historyRouter,
       })
     }

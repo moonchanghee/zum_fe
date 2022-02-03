@@ -25,12 +25,13 @@ console.log("asdfasdf",this.$state.modify.title)
       }
 
       setEvent(){
-      this.$target.querySelector('.title').value = this.$state.modify.title
-      this.$target.querySelector('.contents').value = this.$state.modify.contents
-      this.$target.querySelector('.writer').value = this.$state.modify.writer
+        this.$target.querySelector('.title').value = this.$state.modify.title
+        this.$target.querySelector('.contents').value = this.$state.modify.contents
+        this.$target.querySelector('.writer').value = this.$state.modify.writer
+      }
+
+      setEvent2(){
       this.$target.querySelector('.submit').addEventListener('click' , () => {
-        console.log(this.$target.querySelector('.writer').value )
-        console.log(window.location.search)
         let data = {
           title : this.$target.querySelector('.title').value ,
           writer : this.$target.querySelector('.writer').value ,
