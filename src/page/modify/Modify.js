@@ -9,8 +9,6 @@ export default class Modify extends Component {
     };
   }
     template () {
-console.log(this.$state.modify)
-console.log("asdfasdf",this.$state.modify.title)
 
         return `
         <h1>수정 페이지</h1>    
@@ -45,6 +43,13 @@ console.log("asdfasdf",this.$state.modify.title)
           },
           body: JSON.stringify(data)
         })
+        .then((response) => response.json()).then((e) => {
+          if(e.msg === "success"){
+            window.alert(e.msg) 
+            history.back()
+          }else{
+            window.alert(e.msg) 
+          }})
       })
       }
 }

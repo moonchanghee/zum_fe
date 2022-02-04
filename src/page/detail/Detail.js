@@ -44,13 +44,21 @@ export default class Detail extends Component {
       let url = '/modify' + pk 
       historyRouter(this.$state.detail[0] ,null,url)
   });
+
     this.$target.querySelector('#delBtn').addEventListener('click', () => {
-    console.log("삭제")
-});
+    fetch("http://localhost:3001/detail" + window.location.search,{method: "delete"})
+    .then((response) => response.json()).then((e) => {
+      if(e.msg === "success"){
+        window.alert(e.msg) 
+        history.back()
+      }else{
+        window.alert(e.msg) 
+      }})
+  });
     this.$target.querySelector('#backBtn').addEventListener('click', () => {
     console.log("목록")
     history.back()
-});
+  });
 
   }
 }

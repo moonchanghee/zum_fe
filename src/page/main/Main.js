@@ -7,16 +7,23 @@ export default class Main extends Component {
       data : [{}],
       currentP : 1,
       countBtn : 5,
-
+      searchData : [{}] ,
+      searchBool : false
     };
   }
   template () {
     let lastPageNum = this.$state.currentP * this.$state.countBtn
     let firstPageNum = lastPageNum - this.$state.countBtn
-    let tableDatas = this.$state.data.slice(firstPageNum,lastPageNum)
-    let total = Math.ceil((this.$state.data.length)/this.$state.countBtn)
-    let count = Array.from({length : total}, (a,b) => b+1)
-
+    var tableDatas = this.$state.data.slice(firstPageNum,lastPageNum)
+    var total = Math.ceil((this.$state.data.length)/this.$state.countBtn)
+    console.log("searchdata" , this.$state.searchData)
+  if(this.$state.searchBool){
+    tableDatas = this.$state.searchData.slice(firstPageNum,lastPageNum)
+    total = Math.ceil((this.$state.searchData.length)/this.$state.countBtn)
+  }
+  let count = Array.from({length : total}, (a,b) => b+1)
+    
+  
     return `
     <h1>메인 페이지</h1> 
     <input type="text" class = "search" value="" placeholder = "게시물 검색"/> 
@@ -31,7 +38,7 @@ export default class Main extends Component {
     ${tableDatas.map((e) => 
       `<tr><td>${e.id}</td>
       <td><button class = "titleBtn" index = "${e.id}" >${e.title}</button></td>
-      <td>${e.writer}</td>
+      <td><button class = "writerBtn" index = "${e.writer}" >${e.writer}</button></td>
       <td>${e.date}</td></tr>`
     ).join("")}
     </table></br>
@@ -63,27 +70,42 @@ export default class Main extends Component {
       historyRouter(null,null,url)
     })
     )
+
+    this.$target.querySelector('.searchBtn').addEventListener('click' , () => {
+      console.log("검색")
+      let data = this.$target.querySelector('.search').value
+      let search = []
+      this.$state.data.map((e) => {
+        if(e.title.includes(data)){
+          search.push(e)
+        }
+      })
+      this.setState({searchData : search , searchBool : true ,currentP : 1})
+      })
+
+    this.$target.querySelectorAll('.writerBtn').forEach((writerBtn) => 
+      writerBtn.addEventListener('click', (e) => {
+      let data = e.target.getAttribute("index")
+      let search = []
+      this.$state.data.map((e) => {
+        if(e.writer == data){
+          search.push(e)
+        }
+      })
+      this.setState({searchData : search , searchBool : true ,currentP : 1})
+    })
+    )
+
+
+
     this.$target.querySelector('.writeBtn').addEventListener('click' , () => {
       console.log("작성")
       historyRouter(null,null,"/write")
 
      })
      this.$target.querySelector('.initBtn').addEventListener('click' , () => {
-      console.log("초기화")
+      this.setState({searchBool : false ,countBtn : 5})
      })
-     this.$target.querySelector('.searchBtn').addEventListener('click' , () => {
-    console.log("검색")
-    console.log(this.$target.querySelector('.search').value) 
-    let data = this.$target.querySelector('.search').value
-    let searchData = []
-    // this.$state.data.map((e) => {
-    //   if(e.title.includes(data)){
-    //     console.log(e)
-    //     searchData.push(e)
-    //   }
-    // })
-    // this.setState({data : searchData} )
-    })
      
      this.$target.querySelector('.resetBtn').addEventListener('click' , () => {
       location.reload()
@@ -108,5 +130,6 @@ export default class Main extends Component {
   }
 
 }
+
 
 
