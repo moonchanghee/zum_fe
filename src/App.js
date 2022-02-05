@@ -65,7 +65,6 @@ template () {
     }
     else if(window.location.pathname == "/write"){
       new Write($main,{
-        historyRouter: historyRouter,
         cacheCheck : cacheCheck
       })
     }

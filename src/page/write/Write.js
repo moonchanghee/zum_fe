@@ -1,6 +1,5 @@
 import Component from "../../cors/Component";
 
-
 export default class Write extends Component {
 
  
@@ -20,14 +19,13 @@ template () {
       }
 
       setEvent2(){
-        let {cacheCheck,historyRouter} = this.$props
+        let {cacheCheck} = this.$props
         let today = new Date();   
-        let year = today.getFullYear(); // 년도
-        let month = today.getMonth() + 1;  // 월
-        let date = today.getDate();  // 날짜
+        let year = today.getFullYear(); 
+        let month = today.getMonth() + 1; 
+        let date = today.getDate();  
 
         this.$target.querySelector('.submit').addEventListener('click' , () => {
-          console.log("length" , this.$props.length) 
           let data = {
                 title : this.$target.querySelector('.title').value ,
                 writer : this.$target.querySelector('.writer').value ,
@@ -41,16 +39,24 @@ template () {
                   "Content-Type": "application/json",//해석
                 },
                 body: JSON.stringify(data)
-              }).then((response) => response.json()).then((e) => {
-                if(e.msg === "success"){
+              })
+              .then((response) => {
+                if(response.status === 404){
+                  alert(response.statusText)
+                  return 0
+                }else if(response.status === 200){
+                  return response.json()
+                }})
+                .then((e) => {
+                  if(e.msg === "success"){
                   window.alert(e.msg) 
                   cacheCheck(true)
                   history.back()
-                }else{
-                  window.alert(e.msg) 
-                }})
-        }
-        
+                  }
+                }).catch((e) => {
+                  window.alert(e)
+                })
+            }
       )
       }
 

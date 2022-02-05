@@ -25,7 +25,7 @@ app.get("/get", (req, res) => {
     res.send({data : "hello"});
 });
 app.get("/", (req, res) => {
-    res.send({data : data});
+    res.send({msg : "success",data : data});
 });
 
 app.get("/detail"  , (req,res) =>{

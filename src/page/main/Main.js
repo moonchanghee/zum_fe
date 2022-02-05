@@ -4,11 +4,11 @@ export default class Main extends Component {
 
   setup () {
     this.$state =  {
-      data : [{}],
-      currentP : 1,
-      countBtn : 5,
-      searchData : [{}] ,
-      searchBool : false
+      data : [{}],  //게시글 get 데이터
+      currentP : 1, //현재페이지
+      countBtn : 5, //마지막 페이지
+      searchData : [{}] , //검색데이터
+      searchBool : false //검색체크
 
     };
   }
@@ -69,9 +69,21 @@ export default class Main extends Component {
     }else{
       console.log("데이터없음,캐시갱신")
       fetch("http://localhost:3001/")
-      .then((response) => response.json())
-      .then((data) => {localStorage.setItem("data", JSON.stringify(data.data))
-  })
+      .then((response) => {
+        if(response.status === 404){
+          alert(response.statusText)
+          return 0
+        }else if(response.status === 200){
+          return response.json()
+        }})
+        .then((e) => {
+          if(e.msg === "success"){
+            localStorage.setItem("data", JSON.stringify(e.data))
+          }
+        }).catch((e) => {
+          console.log(e)
+        })
+      
   cacheCheck(false)
   }
   this.setState({
