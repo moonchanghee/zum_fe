@@ -3,11 +3,13 @@ import Main from "./page/main/Main.js";
 import Detail from './page/detail/Detail'
 import Modify from './page/modify/Modify'
 import Write from './page/write/Write'
+import Notfound from './page/notfound/Notfound'
 
 export default class App extends Component {
   setup () {
     this.$state =  {
-      url: "" ,
+      url: "" , 
+      Bool : true 
     };
   }
     
@@ -19,7 +21,12 @@ template () {
     `;
   }
 
-  mounted(){
+  setEvent2(){
+  const cacheCheck = (data) => {
+    this.setState({
+      Bool: data //캐시 변경 알림
+  });
+  }
 
    const historyRouter = (state , title,url) => {
     history.pushState(state, title, url);
@@ -39,24 +46,32 @@ template () {
     if(window.location.pathname == "/"){
         new Main($main,{
           historyRouter: historyRouter,
+          data : this.$state.Bool,
+          cacheCheck:cacheCheck
         });
     }
-    if(window.location.pathname== "/detail"){
+    else if(window.location.pathname== "/detail"){
         new Detail($main,{
           historyRouter: historyRouter,
+          cacheCheck : cacheCheck
         });
 
     }
-    if(window.location.pathname == "/modify"){
+    else if(window.location.pathname == "/modify"){
       new Modify($main,{
         historyRouter: historyRouter,
+        cacheCheck : cacheCheck
       })
     }
-    if(window.location.pathname == "/write"){
+    else if(window.location.pathname == "/write"){
       new Write($main,{
         historyRouter: historyRouter,
+        cacheCheck : cacheCheck
       })
     }
+    else{
+      new Notfound($main);
+  }
   }
 
   

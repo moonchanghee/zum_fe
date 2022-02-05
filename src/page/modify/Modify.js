@@ -29,13 +29,15 @@ export default class Modify extends Component {
       }
 
       setEvent2(){
+      const {cacheCheck,historyRouter} = this.$props
       this.$target.querySelector('.submit').addEventListener('click' , () => {
         let data = {
           title : this.$target.querySelector('.title').value ,
           writer : this.$target.querySelector('.writer').value ,
           contents : this.$target.querySelector('.contents').value ,
         }
-        fetch("http://localhost:3001/modify" + window.location.search, 
+
+        fetch("http://localhost:3001/modify" + window.location.search,
         {
           method: "put",
           headers: {
@@ -43,13 +45,22 @@ export default class Modify extends Component {
           },
           body: JSON.stringify(data)
         })
-        .then((response) => response.json()).then((e) => {
-          if(e.msg === "success"){
-            window.alert(e.msg) 
-            history.back()
-          }else{
-            window.alert(e.msg) 
+        .then((response) => {
+          if(response.status === 404){
+            alert(response.statusText)
+            return 0
+          }else if(response.status === 200){
+            return response.json()
           }})
+          .then((e) => {
+            if(e.msg === "success"){
+              window.alert(e.msg) 
+              cacheCheck(true)
+              historyRouter(null,null,"/")
+            }
+          }).catch((e) => {
+            window.alert(e)
+          })
       })
       }
 }

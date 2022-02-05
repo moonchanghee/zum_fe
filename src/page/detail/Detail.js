@@ -4,7 +4,7 @@ export default class Detail extends Component {
   
   setup () {
     this.$state =  {
-      detail : [{}],
+      detail : history.state,
     };
   }
     
@@ -28,15 +28,15 @@ export default class Detail extends Component {
   }
 
   setEvent(){
-    fetch("http://localhost:3001/detail" +window.location.search )
-    .then((response) => response.json())
-    .then((data) => this.setState({
-      detail: data.data
-  }))
+  //   fetch("http://localhost:3001/detail" +window.location.search )
+  //   .then((response) => response.json())
+  //   .then((data) => this.setState({
+  //     detail: data.data
+  // })).catch((e) => {console.log(e); window.alert("데이터없음")})
   }
 
   setEvent2(){
-    const { historyRouter } = this.$props;
+    const { historyRouter ,cacheCheck} = this.$props;
 
     this.$target.querySelector('#upBtn').addEventListener('click', () => {
       console.log("수정")
@@ -45,19 +45,30 @@ export default class Detail extends Component {
       historyRouter(this.$state.detail[0] ,null,url)
   });
 
-    this.$target.querySelector('#delBtn').addEventListener('click', () => {
+   this.$target.querySelector('#delBtn').addEventListener('click', () => {
     fetch("http://localhost:3001/detail" + window.location.search,{method: "delete"})
-    .then((response) => response.json()).then((e) => {
+    .then((response) => {
+    if(response.status === 404){
+      alert(response.statusText)
+      return 0
+    }else if(response.status === 200){
+      return response.json()
+    }
+    }).then((e) => {
       if(e.msg === "success"){
         window.alert(e.msg) 
-        history.back()
-      }else{
-        window.alert(e.msg) 
-      }})
-  });
+        cacheCheck(true)
+        historyRouter(null,null,"/")
+    }}).catch((e) => {
+      window.alert(e)
+    })
+  })
+
+
+
     this.$target.querySelector('#backBtn').addEventListener('click', () => {
     console.log("목록")
-    history.back()
+    historyRouter(null ,null,"/")
   });
 
   }

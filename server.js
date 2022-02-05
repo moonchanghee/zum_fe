@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const app = express();
-
 let data = [
     { id: 1, title : "제목1" , writer: '글쓴이1',  contents : "내용내용1" , date : "2022.1.25" },
     { id: 2, title : "제목2" , writer: '글쓴이2',  contents : "내용내용2" , date : "2022.1.26" },
@@ -15,8 +14,10 @@ let data = [
     { id: 9, title : "제목9" , writer: '글쓴이6',  contents : "내용내용9" , date : "2022.2.2" },
     { id: 10, title : "제목10" , writer: '글쓴이10',  contents : "내용내용10" , date : "2022.2.3" },
     { id: 11, title : "제목11" , writer: '글쓴이11',  contents : "내용내용11" , date : "2022.2.4" },
-    { id: 12, title : "제목12" , writer: '글쓴이12',  contents : "내용내용12" , date : "2022.2.5" }
- ]
+    { id: 12, title : "제목12" , writer: '글쓴이12',  contents : "내용내용12" , date : "2022.2.5" },
+    { id: 13, title : "제목13" , writer: '글쓴이13',  contents : "내용내용13" , date : "2022.2.5" }
+ 
+]
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -30,36 +31,34 @@ app.get("/", (req, res) => {
 app.get("/detail"  , (req,res) =>{
     const id = req.query.id
     let detailData = data.filter(function (e) { return e.id == id });
-    res.send({data :detailData })
+
+    return res.send({msg : "success" , data :detailData })
+    
 })
 app.delete("/detail"  , (req,res) =>{
     const id = req.query.id
     const delData = data.find(e => e.id === parseInt(id));
-    if(!delData) {
-       return res.status(404).send('ID was not found.');
-    }else{
-        const index = data.indexOf(delData);
-        data.splice(index, 1);
-        return res.send({msg : "success"})
-    }
+    const index = data.indexOf(delData);
+    data.splice(index, 1);
+
+    return res.send({msg : "success"})
+
 })
 
 app.put("/modify" , (req,res) => { 
     const id = req.query.id
     const modifyData = data.find(e => e.id === parseInt(id))
-    if(!modifyData){
-        return res.status(404).send('ID was not found.')
-    }else{
-        modifyData.title = req.body.title
-        modifyData.writer = req.body.writer
-        modifyData.contents = req.body.contents
-        return res.send({msg : "success"})
-    }
+    modifyData.title = req.body.title
+    modifyData.writer = req.body.writer
+    modifyData.contents = req.body.contents
+
+    return res.send({msg : "success"})
 
 })
 
 app.post("/write" , (req,res) => {
 console.log(req.body)
+// console.log(localStorage.getItem('data'))
 let writeData = {
     id : data.length+1,
     title : req.body.title,
@@ -68,6 +67,7 @@ let writeData = {
     date: req.body.date
 }
     data.push(writeData)
+    return res.send({msg : "success" , id : writeData.id})
 })
 
 

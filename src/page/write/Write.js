@@ -13,20 +13,22 @@ template () {
         </br></br>
         <input type="text" class="contents" value="" placeholder = "내용"/>
         </br></br>
-        <input type="text" class="writer" value= ""/>
+        <input type="text" class="writer" value= "" placeholder = "작성자"/>
         </br></br>
         <button class = "submit">전송</button>
         `
       }
 
       setEvent2(){
+        let {cacheCheck,historyRouter} = this.$props
         let today = new Date();   
         let year = today.getFullYear(); // 년도
         let month = today.getMonth() + 1;  // 월
         let date = today.getDate();  // 날짜
 
         this.$target.querySelector('.submit').addEventListener('click' , () => {
-            let data = {
+          console.log("length" , this.$props.length) 
+          let data = {
                 title : this.$target.querySelector('.title').value ,
                 writer : this.$target.querySelector('.writer').value ,
                 contents : this.$target.querySelector('.contents').value ,
@@ -39,7 +41,14 @@ template () {
                   "Content-Type": "application/json",//해석
                 },
                 body: JSON.stringify(data)
-              })
+              }).then((response) => response.json()).then((e) => {
+                if(e.msg === "success"){
+                  window.alert(e.msg) 
+                  cacheCheck(true)
+                  history.back()
+                }else{
+                  window.alert(e.msg) 
+                }})
         }
         
       )
