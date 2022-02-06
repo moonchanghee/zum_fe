@@ -1,27 +1,21 @@
 export default class Component {
-  $target;
-  $state;
-  $props;
-  constructor ($target, $props) {
+  constructor($target, $props) {
     this.$target = $target;
     this.$props = $props;
     this.setup();
     this.render();
+    this.setMountEvent()
+  }
+  setup() { }
+  template() { return ''; }
+  render() {
+    this.$target.innerHTML = this.template();
     this.setEvent()
   }
-  setup () {}
-  mounted () {}
-  template () { return ''; }
-  render () {
-    this.$target.innerHTML = this.template();
-    this.mounted()
-    this.setEvent2()
-  }
-  setEvent () {}
-  setEvent2 () {}
-  setState (newState) {
+  setMountEvent() { }
+  setEvent() { }
+  setState(newState) { //상태값 갱신
     this.$state = { ...this.$state, ...newState };
     this.render();
   }
-
 }
