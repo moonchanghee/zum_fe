@@ -16,7 +16,7 @@ export default class Write extends Component {
         <input type="text" class="writer" value= "" placeholder = "작성자"/>
         </br></br>
         <button class = "submit">전송</button>
-        </write>
+        </div>
         `
   }
 
